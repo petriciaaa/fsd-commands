@@ -1,6 +1,6 @@
 Make the Script Executable
 Run the following command to make the script executable:
-    
+
     ``` chmod +x make-slice.sh ```
 
 Add the Script to Your PATH
@@ -13,12 +13,6 @@ Make this script executable and move it to a directory in your PATH:
     ``` chmod +x fsd ```
     ``` sudo mv fsd /usr/local/bin/fsd ```
 
-
 #Now you can run your command using:
 
     ``` fsd make-slice ```
-```ruby
-require 'redcarpet'
-markdown = Redcarpet.new("Hello World!")
-puts markdown.to_html
-```
