@@ -6,8 +6,8 @@
 echo "Enter the name of the new slice:"
 read slice_name
 
-# Define the base path where FSD directories are located
-base_search_path="./src"
+# Use the current directory as the base search path
+base_search_path=$(pwd)
 
 # Check if fzf is installed, and install it if not
 if ! command -v fzf &> /dev/null; then
@@ -22,8 +22,8 @@ if ! command -v fzf &> /dev/null; then
   fi
 fi
 
-# Find all FSD directories
-fsd_directories=($(find "$base_search_path" -type d -name "entities" -o -name "features" -o -name "shared" -o -name "pages" -o -name "widgets" -o -name "processes"))
+# Find all FSD directories in the current directory, ignoring node_modules
+fsd_directories=($(find "$base_search_path" -type d \( -name "node_modules" -prune \) -o \( -type d -name "entities" -o -name "features" -o -name "shared" -o -name "pages" -o -name "widgets" -o -name "processes" \) -print))
 
 # Check if any directories were found
 if [ ${#fsd_directories[@]} -eq 0 ]; then
@@ -50,7 +50,6 @@ create_slice() {
   mkdir -p "$base_dir/$slice_name/api"
   mkdir -p "$base_dir/$slice_name/model"
 
-  touch "$base_dir/$slice_name/index.ts"
   touch "$base_dir/$slice_name/ui/index.ts"
   touch "$base_dir/$slice_name/api/index.ts"
   touch "$base_dir/$slice_name/model/slice.ts"
