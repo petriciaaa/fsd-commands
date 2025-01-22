@@ -23,7 +23,7 @@ if ! command -v fzf &> /dev/null; then
 fi
 
 # Find all FSD directories in the current directory, ignoring node_modules
-fsd_directories=($(find "$base_search_path" -type d \( -name "node_modules" -prune \) -o \( -type d -name "entities" -o -name "features" -o -name "shared" -o -name "pages" -o -name "widgets" -o -name "processes" \) -print))
+fsd_directories=($(find "$base_search_path" -type d \( -name "node_modules" -prune \)  -o -type d -maxdepth 15 \( -type d -name "entities" -o -name "features" -o -name "shared" -o -name "pages" -o -name "widgets" -o -name "processes" \) -print))
 
 # Check if any directories were found
 if [ ${#fsd_directories[@]} -eq 0 ]; then
