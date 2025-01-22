@@ -31,8 +31,8 @@ COLOR_PAGES="\033[34m"     # Blue
 COLOR_WIDGETS="\033[35m"   # Magenta
 COLOR_PROCESSES="\033[36m" # Cyan
 
-# Find all FSD directories in the current directory, ignoring node_modules
-fsd_directories=($(find "$base_search_path" -maxdepth 15 -type d  \( -name "node_modules" -prune \)  -o -type d  \( -type d -name "entities" -o -name "features" -o -name "shared" -o -name "pages" -o -name "widgets" -o -name "processes" \) -print))
+# Find all FSD directories and their subdirectories, ignoring node_modules
+fsd_directories=($(find "$base_search_path" -type d \( -name "node_modules" -prune \) -o -type d \( -path "*/entities*" -o -path "*/features*" -o -path "*/shared*" -o -path "*/pages*" -o -path "*/widgets*" -o -path "*/processes*" \) -print))
 
 # Check if any directories were found
 if [ ${#fsd_directories[@]} -eq 0 ]; then
@@ -56,7 +56,7 @@ colorize_directory() {
 
 # Use fzf to choose a directory
 echo "Choose a directory to add the slice to:"
-selected_dir=$(printf "%s\n" "${fsd_directories[@]}" | while read dir; do colorize_directory "$dir"; done | fzf --ansi --height 10 --border --prompt="Select directory: ")
+selected_dir=$(printf "%s\n" "${fsd_directories[@]}" | while read dir; do colorize_directory "$dir"; done | fzf --ansi --height 20 --border --prompt="Select directory: ")
 
 # Check if a directory was selected
 if [ -z "$selected_dir" ]; then
