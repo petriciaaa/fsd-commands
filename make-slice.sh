@@ -49,6 +49,8 @@ create_slice() {
   mkdir -p "$base_dir/$slice_name/ui"
   mkdir -p "$base_dir/$slice_name/api"
   mkdir -p "$base_dir/$slice_name/model"
+  
+  touch "$base_dir/$slice_name/index.ts"
 
   touch "$base_dir/$slice_name/ui/index.ts"
   touch "$base_dir/$slice_name/api/index.ts"
