@@ -1,7 +1,7 @@
 Make the Script Executable
 Run the following command to make the script executable:
 
-    ``` chmod +x make-slice.sh ```
+    chmod +x make-slice.sh
 
 Add the Script to Your PATH
 Move the script to a directory that's in your PATH, or add its directory to your PATH. For example, you can move it to /usr/local/bin:
