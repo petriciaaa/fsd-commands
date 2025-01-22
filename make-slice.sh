@@ -34,9 +34,20 @@ COLOR_PROCESSES="\033[36m" # Cyan
 # Find all FSD directories and their subdirectories, ignoring node_modules
 fsd_directories=($(find "$base_search_path" -type d \( -name "node_modules" -prune \) -o -type d \( -path "*/entities*" -o -path "*/features*" -o -path "*/shared*" -o -path "*/pages*" -o -path "*/widgets*" -o -path "*/processes*" \) -print))
 
+# Filter out directories that already contain ui, lib, or model
+filtered_directories=()
+for dir in "${fsd_directories[@]}"; do
+  if [ ! -d "$dir/ui" ] && [ ! -d "$dir/lib" ] && [ ! -d "$dir/model" ]; then
+    parent_dir=$(dirname "$dir")
+    if [ ! -d "$parent_dir/ui" ] && [ ! -d "$parent_dir/lib" ] && [ ! -d "$parent_dir/model" ]; then
+      filtered_directories+=("$dir")
+    fi
+  fi
+done
+
 # Check if any directories were found
-if [ ${#fsd_directories[@]} -eq 0 ]; then
-  echo "No FSD directories found in $base_search_path."
+if [ ${#filtered_directories[@]} -eq 0 ]; then
+  echo "No suitable FSD directories found in $base_search_path."
   exit 1
 fi
 
@@ -56,7 +67,7 @@ colorize_directory() {
 
 # Use fzf to choose a directory
 echo "Choose a directory to add the slice to:"
-selected_dir=$(printf "%s\n" "${fsd_directories[@]}" | while read dir; do colorize_directory "$dir"; done | fzf --ansi --height 20 --border --prompt="Select directory: ")
+selected_dir=$(printf "%s\n" "${filtered_directories[@]}" | while read dir; do colorize_directory "$dir"; done | fzf --ansi --height 20 --border --prompt="Select directory: ")
 
 # Check if a directory was selected
 if [ -z "$selected_dir" ]; then
